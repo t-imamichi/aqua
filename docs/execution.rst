@@ -1,10 +1,13 @@
 .. _aqua-execution:
 
 =====================================
-Configuring and Running an Experiment
+設定と実験の実行
 =====================================
 
-Aqua supports two types of users:
+Aquaは2つのタイプのユーザーをサポートします： 
+
+1. *実践者*：単にアクアを実行するツールとして、ref： `quantum-algorithms`を実行することに興味があります。 これらのユーザーは、追加の機能でAquaを拡張することに関心がないかもしれません。 実際、彼らは、回路、ゲート、量子ビットといった概念のような量子コンピューティングの詳細を学ぶことにも興味がないかもしれません。 これらのユーザが量子コンピューティングに期待するのは、古典的なアルゴリズムの使用と比較して、性能と精度の向上、計算の複雑さの低減です。 Aquaはまた、参照値を生成し、実験中の結果を比較して対比するための：ref： `古典的参照アルゴリズム 'のライブラリを提供しています。
+2. *量子アルゴリズムの研究者および開発者*：より効率的かつ正確な計算のために、新しい量子アルゴリズムまたはアルゴリズムコンポーネントでAquaを拡張することに関心のある。
 
 1. *Practitioners*, who are merely interested in executing Aqua
    as a tool to execute :ref:`quantum-algorithms`.
@@ -21,6 +24,10 @@ Aqua supports two types of users:
    Aqua with new quantum algorithms or algorithm components for more efficient
    and accurate computations.
 
+このセクションでは、アルゴリズムの実践者である第1クラスのユーザーについて説明します。 具体的には、このセクションでは、量子アルゴリズムの実行を実験するためのツールとしてAquaにアクセスする方法について説明します。
+
+新しいコンポーネントでAquaを拡張する方法を知るには、 `section：ref：` aqua-extending`を参照してください。
+
 In this section, we cover the first class of users --- the algorithm practitioners.
 Specifically, this section describes how Aqua can be accessed as a
 tool for experimenting with the execution of quantum algorithms.
@@ -29,8 +36,9 @@ To see how you can extend Aqua with new components,
 please refer to `Section ":ref:`aqua-extending`".
 
 ---------------
-Execution Modes
+実行モード
 ---------------
+Aquaには、 `グラフィカルユーザーインターフェイス（GUI）<＃aqua-gui>`_ と `コマンドラインツール<＃aqua-command-line>`_ があります。 これらは、量子アルゴリズムを試すときに使用できます。 両方とも、実験の問題の種類と計算に使用される量子アルゴリズムとアルゴリズムの構成やその他のさまざまなオプションを指定した `input file <＃aqua-input-file>`_ をロードして実行できます。実験をカスタマイズする Aquaを初めてお使いの方は、GUIを使い始めることを強くお勧めします。 Aquaは、コマンドラインとGUIが提供できるものを越えて実験をカスタマイズすることに関心を持つユーザーによって、 `プログラム可能<＃aqua-programmable-interface>`_ にアクセスすることもできます。 最後に、Aqua実験を構成するユーザと新しいコンポーネントでAquaを拡張する研究者は、：ref： `aqua-doc-ui`にアクセスして、様々なコンポーネントとその設定パラメータを素早く調べることができます。
 
 Aqua has both a `Graphical User Interface (GUI) <#aqua-gui>`__ and a `command
 line tool <#aqua-command-line>`__.  These can be used when experimenting with quantum algorithms.
@@ -54,40 +62,31 @@ and their configuration parameters.
 ^^^
 GUI
 ^^^
+GUIは、ゼロから作成するか、既存の `入力ファイル<＃aqua-input-file> `_ を読み込み、その入力ファイルを実行して量子アルゴリズムを試す簡単な手段を提供します。 Aquaの入力ファイルはJSON形式であるとみなされます。 このファイルは、パラメータ値のスキーマベースで検証し作成、編集、保存されます。
 
-The GUI provides an easy means to create from scratch, or load
-an existing, `input file <#aqua-input-file>`__, and then run that input file to experiment with a
-quantum algorithm.
-An input file for Aqua is assumed to be in JSON format.  Such a file is created,
-edited and saved with schema-based validation of parameter values.
-
-When installing
-Aqua via the ``pip install`` command,
-a script is created that allows you to start the GUI from the command line,
-as follows:
+インストール時
+`` pip install``コマンドでAquaを起動すると、次のようにコマンドラインからGUIを起動できるスクリプトが作成されます：
 
 .. code:: sh
 
    qiskit_aqua_ui
 
-If you cloned Aqua directly from the
-`GitHub repository <https://github.com/Qiskit/aqua>`__ instead of using ``pip
-install``, then the script above will not be present and the launching command should be instead:
+`` pip install``を使わずに `GitHubリポジトリ<https://github.com/Qiskit/aqua>`_ からAquaを直接クローンした場合、上記のスクリプトは存在せず、起動コマンドが代わりになるはずです ：
 
 .. code:: sh
 
    python qiskit_aqua/ui/run
 
-This command must be launched from the root folder of the ``qiskit-aqua`` repository clone.
+このコマンドは、 `` qiskit-aqua``リポジトリクローンのルートフォルダから起動する必要があります。
 
 .. seealso::
 
-    Consult the documentation on the :ref:`aqua-installation` for more details.
+   詳細は：ref： `aqua-installation`のドキュメントを参照してください。
 
 .. _aqua-command-line:
 
 ^^^^^^^^^^^^
-Command Line
+コマンドライン
 ^^^^^^^^^^^^
 
 If installed via ``pip install``,
@@ -118,106 +117,54 @@ is expected as a command-line parameter.
 .. _aqua-programmable-interface:
 
 ^^^^^^^^^^^^^^^^^^^^^^
-Programmable Interface
+プログラマブルインターフェイス
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Experiments can be run programmatically too. Numerous
-examples on how to program an experiment in Aqua
-can be found in the ``aqua`` folder of the
-`Aqua Tutorials GitHub repository
-<https://github.com/QISKit/aqua-tutorials>`__.
+Experiments can be run programmatically too. Numerous examples on how to program an experiment in Aqua
+can be found in the ``aqua`` folder of the `Aqua Tutorials GitHub repository <https://github.com/QISKit/aqua-tutorials>`__.
 
-It should be noted at this point that Aqua is
-designed to be as much declarative as possible.  This is done in order
-to simplify the programmatic access to Aqua,
-minimize the chances for configuration errors, and help users
-who might not interested in writing a lot of code or
-learning new Application Programming Interfaces (APIs).
+It should be noted at this point that Aqua is designed to be as much declarative as possible.  This is done in order
+to simplify the programmatic access to Aqua, minimize the chances for configuration errors, and help users who might not interested in writing a lot of code or learning new Application Programming Interfaces (APIs).
 
-There is
-nothing preventing a user from accessing the Aqua APIs and
-programming an experiment step by step, but a  more direct way to access Aqua programmatically
-is by obtaining a JSON algorithm input file, such as one of those
-available in the ``aqua/input_files`` subfolder of the
-`Aqua Tutorials GitHub repository <https://github.com/QISKit/aqua-tutorials>`__.
-Such files can be constructed manually, but a much more intuitive way to automatically
-construct one of these input files is
-via Aqua domain-specific applications.  For example,
-the :ref:`aqua-chemistry-command-line`
-and :ref:`aqua-chemistry-gui`
-have options to serialize the input to the quantum algorithm for future reuse.
-The JSON file can then be pasted into a Python program and modified according to the
-needs of the developer, before invoking the ``run_algorithm`` API in ``qiskit_aqua``.
-This technique can be used, for example, to compare the results of two different algorithms.
+There is nothing preventing a user from accessing the Aqua APIs and programming an experiment step by step, but a  more direct way to access Aqua programmatically is by obtaining a JSON algorithm input file, such as one of those
+available in the ``aqua/input_files`` subfolder of the `Aqua Tutorials GitHub repository <https://github.com/QISKit/aqua-tutorials>`__. Such files can be constructed manually, but a much more intuitive way to automatically
+construct one of these input files is via Aqua domain-specific applications.  For example, the :ref:`aqua-chemistry-command-line` and :ref:`aqua-chemistry-gui` have options to serialize the input to the quantum algorithm for future reuse. The JSON file can then be pasted into a Python program and modified according to the needs of the developer, before invoking the ``run_algorithm`` API in ``qiskit_aqua``. This technique can be used, for example, to compare the results of two different algorithms.
 
 .. _aqua-doc-ui:
 
 ^^^^^^^^^^^^^^^^
-Documentation UI
+ドキュメントUI
 ^^^^^^^^^^^^^^^^
+Aquaはモジュール化された拡張可能なソフトウェアフレームワークで、実験を実行するためのツールとしてAquaを使いたい人や、新しいコンポーネントでAquaを拡張することに関心を持つ人など、2種類のエンドユーザをサポートしています。 これらのカテゴリのいずれかのユーザーは、プラグイン可能なすべてのコンポーネントとそのパラメータのスキーマを示すAquaドキュメントUIにアクセスすると便利です。
 
-Aqua is a modular and extensible software framework, supporting two types of endusers: those who want
-to simply use Aqua as a tool to execute experiments, and those interested in extending Aqua
-with new components.  Users in either of these categories may find it useful to access the Aqua documentation UI,
-which shows all the
-pluggable components along with the schemas for their parameters.
-
-If installed via ``pip install``,
-Aqua comes with the following command-line tool
-to launch the Aqua documentation UI:
+`` pip install``を介してインストールされた場合、
+Aquaには、AquaドキュメントUIを起動するための次のコマンドラインツールが付属しています。
 
 .. code:: sh
 
    qiskit_aqua_browser
 
-If you cloned Aqua from its remote
-`GitHub repository <https://github.com/QISKit/aqua>`__
-instead of using ``pip install``, then the
-Aqua documentation UI can be launched as follows:
+`` pip install``を使う代わりに、リモート `GitHubリポジトリ<https://github.com/QISKit/aqua>` __からAquaをクローンした場合、
+AquaのドキュメントUIは、次のように起動できます。...
 
 .. code:: sh
 
    python qiskit_aqua/ui/browser
 
-from the root folder of the ``qiskit-aqua`` repository clone.
+`` qiskit-aqua``リポジトリクローンのルートフォルダから
 
 .. _aqua-input-file:
 
 ----------
-Input File
+入力ファイル
 ----------
+入力ファイルは、Aqua問題を定義するために使用され、量子アルゴリズムへの入力と、基礎となる量子システムの構成情報を含みます。 与えられていない場合には、デフォルト値を使用するのではなく、計算に使用される処理および量子アルゴリズムを明示的に制御するために、特定の構成パラメータ値が供給されます。
 
-An input file is used to define an Aqua problem,
-and includes the input to the
-quantum algorithm
-as well as configuration information for
-the underlying quantum system.
-Specific configuration parameter values can be supplied to
-explicitly control the processing and the quantum algorithm used for
-the computation, instead of using defaulted values when none are
-supplied.
+入力ファイルのフォーマットは `JavaScript Object Notation（JSON）<https://www.json.org/>`__ です。 これにより、スキーマベースの構成入力の正確性の検証が可能になります。 Aquaでは、手動でJSON入力ファイルを生成することは可能ですが、ドメイン固有のアプリケーションの実行からこのようなJSON入力ファイルを自動的に生成することができます。
 
-The format for the input file is `JavaScript Object Notation (JSON) <https://www.json.org/>`__.
-This allows for schema-based
-configuration-input correctness validation.  While it is certainly possible to
-generate a JSON input file manually, Aqua allows for a simple way
-for automatically generating such a JSON input file from the execution
-of a domain-specific application.
+例えば、Aqua Chemistryのコマンドラインツール：ref： `aqua-chemistry-command-line`と：ref：` aqua-chemistry-gui`は、両方ともJSONファイル：ref ： `input-file-for-direct-algorithm-invocation` として、量子アルゴリズムへの入力を自動的にシリアル化します。 量子アルゴリズムへの入力をシリアライズすることは、そのようなJSONファイルの内容がドメインと問題に依存しないため、多くのシナリオで役に立ちます。
 
-For example, the Aqua Chemistry `command-line tool
-:ref:`aqua-chemistry-command-line`
-and :ref:`aqua-chemistry-gui` 
-both allow for automatically serializing the input to the quantum algorithm
-as a JSON :ref:`input-file-for-direct-algorithm-invocation`.
-Serializing the input to the quantum algorithm is useful in many scenarios
-because the contents of one of such JSON files are domain- and problem-independent:
-
-- Users can share JSON files among each other in order to compare and contrast
-  their experimental results at the algorithm level, for example to compare
-  results obtained by passing the same input to different algorithms, or
-  to different implementations of the same algorithm, regardless of the domain
-  in which those inputs were generated (chemistry, artificial intelligence, optimization, etc.)
-  or the problem that the user was trying to solve.
+- Users can share JSON files among each other in order to compare and contrast their experimental results at the algorithm level, for example to compare results obtained by passing the same input to different algorithms, or to different implementations of the same algorithm, regardless of the domain in which those inputs were generated (chemistry, artificial intelligence, optimization, etc. or the problem that the user was trying to solve.
 - People performing research on quantum algorithms may be interested in having
   access to a number of such JSON files in order to test and refine the design and
   implementation of an algorithm, irrespective of the domain in which those JSON files were generated
@@ -237,113 +184,42 @@ An input file comprises the following main sections, although not all
 mandatory:
 
 ^^^^^^^^^^^^^
-``"problem"``
+``"問題"``
 ^^^^^^^^^^^^^
+Aquaでは、* problem *は実行されている実験のタイプを指定します。 問題の構成は、特定の実験に適したアルゴリズムを決定するため不可欠です。 Aquaには、あらかじめ定義された問題があります。 このセットは拡張可能です。既存の問題を別の方法で解決するために新しいアルゴリズムをプラグインできるように、新しい問題を追加することも、新しい問題を解決することもできます。
 
-In Aqua,
-a *problem* specifies the type of experiment being run.  Configuring the problem is essential
-because it determines which algorithms are suitable for the specific experiment.
-Aqua comes with a set of predefined problems.
-This set is extensible: new problems can be added,
-just like new algorithms can be plugged in to solve existing problems in a different way,
-or to solve new problems.
-
-Currently, a problem can be configured by assigning a ``str`` value to the ``"name"`` parameter:
+現在、 `` name ""パラメータに `` str``の値を代入することで問題を設定できます：
 
 .. code:: python
 
     "name" = "energy" | "excited_states" | "ising" | "dynamics" | "search" | "svm_classification"
 
-As shown above, ``"energy"``, ``"excited_states"``, ``"ising"``, ``"dynamics"``,
-``"search"``, and ``"svm_classification"`` are currently
-the only values accepted for ``"name"``, corresponding to the computation of
-*energy*, *excited states*, *Ising models*, *dynamics of evolution*, *search* and
-*Support Vector Machine (SVM) classification*, respectively.
-New problems, disambiguated by their
-``"name"`` parameter, can be programmatically
-added to Aqua via the
-``AlgorithmInput`` Application Programming Interface (API), and each quantum or classical
-Aqua algorithm should programmatically list the problems it is suitable for in its JSON schema, embedded into
-the class implementing the ``QuantumAlgorithm`` interface.
+上で示したように、 "エネルギー" "、" "興奮状態 "、 "イジング "、 ""力学 ""、"探索"および""svm_分類""が現在のところ、"name"で受け入れられている値です。 *エネルギー*、*励起状態*、*イジングモデル*、*進化のダイナミクス*、*検索*、*サポートベクターマシン（SVM）分類*の計算に対応しています。新しい問題は、"name"パラメーターに明確化され、``AlgorithmInput`` Application Programming Interface (API)　を介してAquaにプログラマティカリーに追加され、それぞれの量子または古典的なAquaアルゴリズムは、``QuantumAlgorithm`` インターフェースでインプリされたクラスとしてJSONスキームで、問題をリストアップする必要があります。
 
-Aspects of the computation may include use of random numbers. For instance, the 
-:ref:`vqe`
-is coded to use a random initial point if the variational form does not supply any
-preference based on the initial state and if the
-user does not explicitly supply an initial point. 
-In this case, each run of VQE, for what would otherwise be a constant problem,
-can produce a different result, causing non-determinism and the inability to replicate
-the same result across different runs with
-identical configurations. Even though the final values obtained after multiple
-executions of VQE might be numerically indistinguishable,
-the number of evaluations may differ across different runs.
-To enable repeatable experiments, with the exact same outcome, a *random seed* can be set,
-thereby forcing the same pseudo-random numbers to
-be generated every time the experiment is run:
+計算の際には、乱数の使用を含むことができます。 例えば、VQEで、変分法が初期状態に基づいて優先事項を供給しない場合、およびユーザが明示的に初期ポイントを供給しない場合、ランダム初期ポイントを使用するようにコード化されます。 この場合、VQEの各実行は、それ以外の場合には一定の問題となる可能性があるため、異なる結果を生み出す可能性があり、非決定論を引き起こし、同一の構成で異なる実行間で同じ結果を複製することができません。 VQEを複数回実行した後に得られる最終的な値は数値的に区別できない場合がありますが、評価の数は実行ごとに異なる場合があります。 反復可能な実験を可能にするために、全く同じ結果でランダムなシードを設定することで、実験が実行されるたびに同じ疑似乱数が強制的に生成されます。
+
 
 .. code:: python
 
     "random_seed" : int
 
-The default value for this parameter is ``None``.
+このパラメータのデフォルト値は `` None``です。
 
 ^^^^^^^^^^^
-``"input"``
+``"入力"``
 ^^^^^^^^^^^
-
-This section allows the user to specify the input to the Aqua algorithm.
-Such input is expected to be a qubit operator, expressed as the value of the
-``"qubit_op"`` parameter, for problems of type energy, excited states, Ising models and
-dynamics of evolution.  For problems of type SVM classification, the input consists
-of a *training dataset* (a map linking each label to a list of data points),
-a *test dataset* (also a map linking each label to a list of data points), and
-the list of data points on which to apply classification.
-These are specified as the values of the parameters
-``"training_datasets"``, ``"test_datasets"``, and ``"datapoints"``, respectively.
-The ``"input"`` section is disabled for problems of type search; for such problems,
-the input specification depends on the particular
-oracle chosen for the :ref:`grover` algorithm.
-Currently, Aqua provides an implementation of the satisfiability (SAT) oracle,
-which takes as input a SAT problem in
-`DIMACS CNF format <http://www.satcompetition.org/2009/format-benchmarks2009.html>`__
-expressed as the value of the ``"cnf"`` parameter,
-and constructs the corresponding quantum circuit.
+このセクションでは、ユーザーがAquaアルゴリズムへの入力を指定できます。そのような入力は、タイプエネルギー、励起状態、イジングモデルおよび進化のダイナミクスの問題に対する「qubit_op」パラメータの値として表されるキュビット演算子であると予想されます。 SVM分類の問題については、入力はトレーニングデータセット（各ラベルをデータポイントのリストにリンクするマップ）、テストデータセット（各ラベルをデータポイントのリストにリンクするマップ）、および分類を適用するデータポイント。これらは、それぞれ、「training_datasets」、「test_datasets」、および「datapoints」のパラメータの値として指定されます。 "input"セクションはタイプ検索の問題では無効です。そのような問題の場合、入力仕様は、Quantum Grover Searchアルゴリズムで選択された特定のオラクルに依存します。現在、Aquaは、「cnf」パラメータの値として表されるDIMACS CNF形式のSAT問題を入力として受け取り、対応する量子回路を構築する充足可能性（SAT）オラクルの実装を提供しています。
 
 ^^^^^^^^^^^^^^^
-``"algorithm"``
+``"アルゴリズム"``
 ^^^^^^^^^^^^^^^
+これはオプションのセクションで、ユーザーはどの量子アルゴリズムを実験に使用するかを指定できます。参照値を計算するために、Aquaは古典参照アルゴリズムのライブラリも提供しています。 「アルゴリズム」セクションでは、各アルゴリズムがAqua QuantumAlgorithm APIに従って提供する必要があるJSONスキーマに基づいて、Aquaが認識する宣言的な名前を使用してアルゴリズムの曖昧さを解消します。宣言的な名前は、「アルゴリズム」セクションの「名前」パラメータとして指定されます。 "name"パラメータのデフォルト値は "VQE"で、Variant Quantum Eigensolver（VQE）アルゴリズムに対応しています。
 
-This is an optional section that allows the user to specify which of the
-:ref:`quantum-algorithms`
-will be used for the experiment.
-To compute reference values, Aqua also offers a library of
-:ref:`classical-reference-algorithms`.
-In the ``"algorithm"`` section, algorithms are disambiguated using the
-declarative names
-by which Aqua recognizes them, based on the JSON schema
-each algorithm must provide according to the Aqua ``QuantumAlgorithm`` API.
-The declarative name is specified as the ``"name"`` parameter in the ``"algorithm"`` section.
-The default value for the ``"name"`` parameter is ``"VQE"``, corresponding
-to the :ref:`vqe`
-algorithm.
+通常、アルゴリズムには一連の構成パラメータが付属しています。それぞれについて、Aqua QuantumAlgorithm APIに従ってデフォルト値が提供されます。
 
-An algorithm typically comes with a set of configuration parameters.
-For each of them, a default value is provided according to the Aqua
-``QuantumAlgorithm`` API.
+さらに、各アルゴリズムに従って、追加のセクションは、そのアルゴリズムの構成要素を任意に構成するのに関連し得る。たとえば、VQEなどの変分アルゴリズムを使用すると、オプティマイザとバリアントフォームのライブラリからオプティマイザとバリアントフォームを選択して構成することができます。量子位相推定（QPE）は、逆量子化フーリエ変換Quantum Grover Searchには、Oraclesライブラリからオラクルを指定するオプションが付属しています。量子アルゴリズムに関するAquaのドキュメントでは、各アルゴリズムとそれが使用する可能性のあるプラガブルエンティティの設定方法について説明しています。
 
-Furthermore, according to each algorithm, additional sections
-may become relevant to optionally
-configure that algorithm's components.  For example, variational algorithms,
-such as VQE, allow the user to choose and configure an
-optimizer and a
-variational form from the :ref:`optimizers` and :ref:`variational-forms` libraries, respectively,
-:ref:`qpe`
-can be configured with one of the
-:ref:`iqfts`,
-and :ref:`grover` comes with the option
-to specify an oracle from the :ref:`oracles` library.
-The Aqua documentation on :ref:`quantum-algorithms`
-explains how to configure each algorithm and any of the pluggable entities it may use.
+制限付きメモリBroyden-Fletcher-Goldfarb-Shanno Bound（L-BFGS-B）オプティマイザおよびRyRz変種フォームとともにアルゴリズムVQEが選択される例を以下に示します。
 
 Here is an example in which the algorithm VQE is selected along with the
 :ref:`L-BFGS-B`
@@ -372,19 +248,15 @@ optimizer and the :ref:`ryrz` variational form:
     }
 
 ^^^^^^^^^^^^^
-``"backend"``
+``"バックエンド"``
 ^^^^^^^^^^^^^
-
-Aqua allows for configuring the *backend*, which is the quantum machine
-on which a quantum experiment will be run.
-This configuration requires specifying 
-the `Qiskit Terra <https://www.qiskit.org/terra>`__ quantum computational
-backend to be used for computation, which is done by assigning a ``str`` value to
-the ``"name"`` parameter of the ``"backend"`` section:
+Aquaでは、量子実験が実行される量子コンピュータであるバックエンドを構成することができます。 この構成では、計算に使用するQiskit Terra量子計算バックエンドを指定する必要があります。これは、str値を「バックエンド」セクションの「name」パラメーターに割り当てることによって行われます。
 
 .. code:: python
 
     "name" : string
+
+「名前」パラメータの値は、実際のハードウェアの量子コンピュータまたは量子シミュレータのいずれかを示します。 Terraには、ローカル・ステート・ベクタ・シミュレータとローカルQASMシミュレータの2つの定義済み量子デバイス・シミュレータが付属しています。「name」パラメータの「local_statevector_simulator」（「name」パラメータのデフォルト値）と "local_qasm_simulator"と呼ばれます。 しかし、実際の量子ハードウェアデバイスを含めて、任意の適切な量子バックエンドを選択することができる。 QISKitがリモートデバイスにアクセスするためにQConfig.pyファイルを設定する必要があります。 このためには、Terraのインストール手順に従うだけで十分です。 Aqua GUI <＃aqua-gui>は、Preferences ...メニュー項目からアクセスできる使いやすいインターフェイスを使用して、QConfig.pyの設定を大幅に簡素化します。
 
 The value of the ``"name"`` parameter indicates either a real-hardware
 quantum computer or a quantum simulator.
