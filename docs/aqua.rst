@@ -2,6 +2,10 @@
 Qiskit Aqua
 ###########
 
+量子コンピューティングの恩恵を受けることができる問題は、化学、人工知能（AI）、最適化、財務などの多くの分野で確認されています。 しかし、量子コンピューティングは非常に特殊なスキルを必要とします。 ソフトウェアスタックのさまざまなレベルで量子コンピューティングを使用し、貢献したいという膨大な人材のニーズに応えるために、Aqua：Quantum Algorithmsのライブラリを作成しました。このライブラリは、直接またはドメイン固有の計算アプリケーションを介して呼び出すことができます。 アクアケミストリー、アクア人工知能、アクア最適化などがあります。 最後に、Aqua Tutorialsはノートブック、入力ファイル、およびサンプルコードのコンパニオンライブラリで、GitHubリポジトリの形で利用できます。
+
+ドキュメントのこの部分では、最初に量子アプリケーションのライブラリとしてAquaを、次にChemistry、AI、および最適化のドメイン固有のアプリケーションについて説明します。
+
 Problems that can benefit from the power of quantum computing
 have been identified in numerous
 domains, such as Chemistry, Artificial Intelligence (AI), Optimization
