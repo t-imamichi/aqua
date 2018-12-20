@@ -2,17 +2,20 @@
 Qiskit Aqua
 ###########
 
-量子コンピューティングの恩恵を受けることができる問題は、化学、人工知能（AI）、最適化、ファイナンスなどの多くの分野で確認されています。 
-しかし、量子コンピューティングは非常に特殊なスキルを必要とします。 
-ソフトウェアスタックのさまざまなレベルで量子コンピューティングを使用し、貢献したいという多くの人のニーズに応えるために、
-:ref:`aqua-library` を作成しました。このライブラリは、直接またはドメイン固有の計算アプリケーション
-( :ref:`aqua-chemistry`, :ref:`aqua-ai` や :ref:`aqua-optimization`)
- を介して呼び出すことができます。
- 最後に、:ref:`aqua-tutorials` はノートブック、入力ファイル、およびサンプルコードのコンパニオンライブラリーで、
- サンプルコードが `GitHub repository <https://github.com/Qiskit/aqua-tutorials>`__ の形で利用できます。
+Problems that can benefit from the power of quantum computing
+have been identified in numerous
+domains, such as Chemistry, Artificial Intelligence (AI), Optimization
+and Finance. Quantum computing, however, requires very specialized skills.
+To address the needs of the vast population of practitioners who want to use and
+contribute to quantum computing at various levels of the software stack, we have
+created :ref:`aqua-library` that can be invoked directly or via domain-specific computational
+applications:
+:ref:`aqua-chemistry`, :ref:`aqua-ai`, and :ref:`aqua-optimization`.
+Finally, :ref:`aqua-tutorials` is a companion library of notebooks, input files and sample code made available in the form of a
+`GitHub repository <https://github.com/Qiskit/aqua-tutorials>`__.
 
-ドキュメントのこの部分では、最初に量子アプリケーションのライブラリーとしてAquaについて説明し、
-次にドメイン固有のAquaのアプリケーション：Chemistry、AI、および最適化　について説明します。
+This part of the documentation will first cover Aqua as a library of quantum applications,
+and then the domain-specific applications of Aqua: Chemistry, AI and Optimization.
 
 .. toctree::
    :maxdepth: 2

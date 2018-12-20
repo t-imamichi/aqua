@@ -1,43 +1,58 @@
 .. _aqua-installation:
 
 ===========================
-インストールとセットアップ
+Aqua Installation and Setup
 ===========================
 
-Aqua は `量子アルゴリズム <#quantum-algorithms.html>`_ を実行するツールとして使われます。適切な入力で、入力された問題をモデリングする量子回路を生成、コンパイルし、量子アルゴリズムの基盤となる `Terra <https://qiskit.org/terra>`_ プラットフォーム上で実行します。 Aquaは、:ref:`aqua-chemistry`、:ref:`aqua-ai` 、:ref:`aqua-optimization` などの特定の領域固有のアプリケーションの基礎としても使用できます。 このセクションでは、ユーザーの目標にもとづいて、Aquaをインストールし設定する方法について説明します。
+Aqua can be used as a tool to execute `quantum algorithms <#quantum-algorithms.html>`__.
+With the appropriate input, a quantum algorithm will run on top of the underlying
+`Terra <https://qiskit.org/terra>`__
+platform, which will generate, compile and execute a circuit modeling the input problem.
+Aqua can also be used as the foundation for domain-specific applications, such as
+:ref:`aqua-chemistry`, :ref:`aqua-ai` and :ref:`aqua-optimization`.
+This section describes how to install and setup Aqua based on the user's goals.
 
 ------------
-依存関係
+Dependencies
 ------------
 
+At least `Python 3.5 or
+later <https://www.python.org/downloads/>`__ is needed to use
+Aqua. In addition, `Jupyter
+Notebook <https://jupyter.readthedocs.io/en/latest/install.html>`__ is
+recommended for interacting with the tutorials. For this reason, we
+recommend installing the `Anaconda
+3 <https://www.continuum.io/downloads>`__ Python distribution, as it
+comes with all of these dependencies pre-installed.
 
-Aquaの導入には、少なくとも、`Python の バージョン3.5 以降 <https://www.python.org/downloads/>`__ のインストールが必要です。チュートリアルを使うためには `Jupyter Notebook <https://jupyter.readthedocs.io/en/latest/install.html>`__ のインストールも推奨します。これらの理由により、すべての依存する不ライブラリーが事前にインストールされた `Anaconda 3 <https://www.continuum.io/downloads>`__　のPythonディストリビューションをインストールすることを推奨します。
-
-.. 参考::
-    Aquaは `Terra <https://qiskit.org/terra>`_ の上に構築されているので、 
-    `Terra インストールとセットアップ <https://qiskit.org/documentation/install.html>`_ も参考にしてください。
-    
+.. seealso::
+    Since Aqua is built upon `Terra <https://qiskit.org/terra>`__,
+    you are encouraged to look over the
+    `Terra
+    installation and setup instructions <https://qiskit.org/documentation/install.html>`__.
 
 ------------
-インストール
+Installation
 ------------
 
-Aqua をツールとして使う、または量子アルゴリズムのライブラリーとして使うのが目的の場合の、Aqua をインストールするベストな方法は、`pip <https://pip.pypa.io/en/stable/>`__ パッケージマネージメントシステムを使って、以下のようにします。
-
+The best way to install Aqua when the goal is to use it as a tool or as a library
+of quantum algorithms is via the `pip <https://pip.pypa.io/en/stable/>`__  package management system:
 
 .. code:: sh
 
     pip install qiskit_aqua
 
+pip will handle all dependencies automatically and you will always
+install the latest (and well-tested) release version.
 
-pipはすべての依存関係を自動的に取り扱うので、常に最新の（よくテストされた）リリースバージョンがインストールされます。
+A different class of users --- namely, quantum researchers and developers --- might be more interested
+in exploring the source code of Aqua and :ref:`aqua-extending` by providing
+new components, such as :ref:`quantum-algorithms`, :ref:`optimizers`, :ref:`variational-forms`,
+:ref:`iqfts`, :ref:`oracles` and :ref:`initial-states`.
+The best way to install Aqua when the goal is to extend its capabilities is by cloning
+the `Aqua repository <https://github.com/Qiskit/aqua>`__.
 
-別のユーザー、例えば、量子の研究者や開発者は、Aquaのソースコードの開発や新規コンポーネントが共有された:ref:`aqua-extending` （:ref:`quantum-algorithms`, :ref:`optimizers`, :ref:`variational-forms`,
-:ref:`iqfts`, :ref:`oracles` and :ref:`initial-states` など）により興味があるでしょう。Aquaの可能性を拡張することが目的の場合に最適な方法は、 `Aqua repository <https://github.com/Qiskit/aqua>`__ をクローンすることです。
+.. note::
 
-
-.. メモ::
-
-    Qiskitと他のアプリケーションを区別し、あなたの経験を向上させるために
-    `Python virtual environments <https://docs.python.org/3/tutorial/venv.html>`__ を使うことを推奨します。
-    
+    We recommend using `Python virtual environments <https://docs.python.org/3/tutorial/venv.html>`__
+    to cleanly separate Qiskit from other applications and improve your experience.
