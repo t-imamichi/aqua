@@ -21,5 +21,8 @@ real quantum device).
    Oracles <oracles>
    Inverse Quantum Fourier Transforms <iqfts>
    Initial States <initial_states>
-   Feature Extractions <feature_extractions>
+   Feature Maps <feature_maps>
+   Multiclass Extensions <multiclass_extensions>
+   Random Distributions <random_distributions>
+   Uncertainty Problems <uncertainty_problems>
    Aqua SDK Reference <qiskit_aqua>

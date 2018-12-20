@@ -63,6 +63,44 @@ from the `options
 dictionary <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.show_options.html>`__,
 which may be referred to for further information.
 
+.. topic:: Transparent Parallelization of Gradient-based Local Opitmizers
+
+Aqua comes with a large collection of adaptive algorithms, such as the
+`Variational Quantum Eigensolver (VQE) algorithm <https://www.nature.com/articles/ncomms5213>`__,
+`Quantum Approximate Optimization
+Algorithm (QAOA) <https://arxiv.org/abs/1411.4028>`__, the `Quantum
+Support Vector Machine (SVM) Variational
+Algorithm <https://arxiv.org/abs/1804.11326>`__ for AI. All these
+algorithms interleave quantum and classical computations, making use of
+classical optimizers. Aqua includes nine local and five global
+optimizers to choose from. By profiling the execution of the adaptive
+algorithms, we have detected that a large portion of the execution time
+is taken by the optimization phase, which runs classically. Among the
+most widely used optimizers are the *gradient-based* ones; these
+optimizers attempt to compute the absolute minimum (or maximum) of a
+function :math:`f` through its gradient.
+
+Five local optimizers among those integrated into Aqua are
+gradient-based: the four local optimizers *Limited-memory
+Broyden-Fletcher-Goldfarb-Shanno Bound (L-BFGS-B)*, *Sequential Least SQuares Programming (SLSQP)*, *Conjugate
+Gradient (CG)*, and *Truncated Newton (TNC)* from
+`SciPy <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html>`__,
+as well as `Simultaneous Perturbation Stochastic Approximation
+(SPSA) <https://www.jhuapl.edu/SPSA/>`__. Aqua contains a
+methodology that parallelizes the classical computation of the partial
+derivatives in the gradient-based local optimizers listed above. This
+parallelization takes place *transparently*, in the sense that Aqua
+intercepts the computation of the partial derivatives and parallelizes
+it without making any change to the actual source code of the
+optimizers.
+
+In order to activate the parallelization mechanism for an adaptive
+algorithm included in Aqua, it is sufficient to construct it with
+parameter ``batch_mode`` set to ``True``. Our experiments have proven
+empirically that parallelizing the process of a gradient-based local
+optimizer achieves a 30% speedup in the execution time of an adaptive algorithms on
+a simulator.
+
 .. _cg:
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -292,6 +330,14 @@ The following parameters are supported:
    This parameter is optional.  If specified, the value of this parameter must be of type ``float``, otherwise, it is  ``None``.
    The default is ``None``.
 
+   .. code:: python
+
+       adaptive : bool
+
+   The default is ``False``.
+
+-  If true will adapt algorithm to dimensionality of problem.
+
 .. topic:: Declarative Name
 
    When referring to Nelder-Mead declaratively inside Aqua, its code ``name``, by which Aqua dynamically discovers and loads it,
@@ -519,9 +565,14 @@ functional evaluations.  Overall, the following parameters are supported:
 
    .. code:: python
 
-       parameters : [float, float, float, float, float]
+       c0 : float; default value is 0.62831853071796 (which is 0.2*PI)
+       c1 : float; default value is 0.1
+       c2 : float; default value is 0.602
+       c3 : float; default value is 0.101
+       c4 : float; default value is 0
 
-   This is an optional parameter, consisting of a list of 5 ``float`` elements.  The default value is ``None``. 
+   These are the SPSA control parameters, consisting of 5 ``float`` values, and are used as described below.
+
    SPSA updates the parameters (``theta``)
    for the objective function (``J``) through the following equation at
    iteration ``k``:
@@ -538,6 +589,16 @@ functional evaluations.  Overall, the following parameters are supported:
    By default, ``c0`` is calibrated through a few evaluations on the
    objective function with the initial ``theta``. ``c1``, ``c2``, ``c3`` and ``c4`` are set as ``0.1``,
    ``0.602``, ``0.101``, ``0.0``, respectively.
+
+- Calibration step for SPSA.
+
+   .. code:: python
+
+       skip_calibration: bool
+
+   The default value is ``False``. When calibration is done, i.e. when ``skip_calibration`` is ``False`` (by default) the
+   control parameter ``c0`` as supplied is adjusted by the calibration step before optimization. If ``skip_calibration``
+   is ``True`` then the calibration step, which occurs ahead of optimization, is skipped and ``c0`` will be used unaltered.
 
 .. topic:: Declarative Name
 
