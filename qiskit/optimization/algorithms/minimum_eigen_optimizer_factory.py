@@ -38,6 +38,7 @@ class MinimumEigenOptimizerFactory:
         return QAOA()
 
 
+# example to customize a factory
 class SpecialMinimumEigenOptimizerFactory(MinimumEigenOptimizerFactory):
     def __init__(self, penalty: float, initial_point: np.ndarray, mes: str = 'numpy'):
         super().__init__(mes)
