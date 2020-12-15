@@ -12,15 +12,16 @@
 
 """Global X phases and parameterized problem hamiltonian."""
 
-from typing import Optional, Union, cast
+from typing import Optional, Union, cast, List, Tuple
 
 import numpy as np
 
 from qiskit import QuantumCircuit
+from qiskit.aqua import AquaError
+from qiskit.aqua.components.initial_states import InitialState
+from qiskit.aqua.components.variational_forms import VariationalForm
 from qiskit.aqua.operators import (OperatorBase, X, I, H, CircuitStateFn,
                                    EvolutionFactory, CircuitOp)
-from qiskit.aqua.components.variational_forms import VariationalForm
-from qiskit.aqua.components.initial_states import InitialState
 
 
 # pylint: disable=invalid-name
@@ -33,7 +34,8 @@ class QAOAVarForm(VariationalForm):
                  cost_operator: OperatorBase,
                  p: int,
                  initial_state: Optional[Union[QuantumCircuit, InitialState]] = None,
-                 mixer_operator: Optional[Union[QuantumCircuit, OperatorBase]] = None):
+                 mixer_operator: Optional[Union[QuantumCircuit, OperatorBase]] = None,
+                 bounds: Optional[List[Tuple[float, float]]] = None):
         """
         Constructor, following the QAOA paper https://arxiv.org/abs/1411.4028
 
@@ -47,8 +49,10 @@ class QAOAVarForm(VariationalForm):
             mixer_operator: An optional custom mixer to use instead of the global X-rotations,
                             denoted as U(B, beta) in the original paper. Can be an operator or
                             an optionally parameterized quantum circuit.
+            bounds: Bounds of parameters.
         Raises:
             TypeError: invalid input
+            AquaError: if the length of bounds does not match with the number of parameters.
         """
         super().__init__()
         self._cost_operator = cost_operator
@@ -58,24 +62,38 @@ class QAOAVarForm(VariationalForm):
 
         if isinstance(mixer_operator, QuantumCircuit):
             self._num_parameters = (1 + mixer_operator.num_parameters) * p
-            self._bounds = [(None, None)] * p + [(None, None)] * p * mixer_operator.num_parameters
+            if bounds:
+                self._bounds = bounds
+            else:
+                self._bounds = [(None, None)] * p + \
+                               [(None, None)] * p * mixer_operator.num_parameters
             self._mixer = mixer_operator
         elif isinstance(mixer_operator, OperatorBase):
             self._num_parameters = 2 * p
-            self._bounds = [(None, None)] * p + [(None, None)] * p
+            if bounds:
+                self._bounds = bounds
+            else:
+                self._bounds = [(None, None)] * p + [(None, None)] * p
             self._mixer = mixer_operator
         elif mixer_operator is None:
             self._num_parameters = 2 * p
             # next three lines are to avoid a mypy error (incorrect types, etc)
-            self._bounds = []
-            self._bounds.extend([(None, None)] * p)
-            self._bounds.extend([(0, 2 * np.pi)] * p)
+            if bounds:
+                self._bounds = bounds
+            else:
+                self._bounds = []
+                self._bounds.extend([(None, None)] * p)
+                self._bounds.extend([(0, 2 * np.pi)] * p)
             # Mixer is just a sum of single qubit X's on each qubit. Evolving by this operator
             # will simply produce rx's on each qubit.
             num_qubits = self._cost_operator.num_qubits
             mixer_terms = [(I ^ left) ^ X ^ (I ^ (num_qubits - left - 1))
                            for left in range(num_qubits)]
             self._mixer = sum(mixer_terms)
+        if len(self._bounds) != self._num_parameters:
+            raise AquaError('Invalid length of bounds: expected {}, actual {}'.format(
+                self._num_parameters, len(self._bounds)
+            ))
 
         self.support_parameterized_circuit = True
 
